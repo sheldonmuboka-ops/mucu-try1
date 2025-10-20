@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, LogOut, User } from 'lucide-react';
+import { Menu, X, LogOut, User, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, isAdmin, logout } = useAuth();
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -52,6 +52,15 @@ export default function Navbar() {
             ))}
             {isAuthenticated ? (
               <div className="flex items-center gap-4">
+                {isAdmin && (
+                  <Link
+                    to="/admin/departments"
+                    className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    <Shield size={18} />
+                    Admin
+                  </Link>
+                )}
                 <div className="flex items-center gap-2 text-white/80">
                   <User size={18} />
                   <span className="text-sm">{user?.email}</span>
@@ -89,6 +98,16 @@ export default function Navbar() {
               ))}
               {isAuthenticated ? (
                 <>
+                  {isAdmin && (
+                    <Link
+                      to="/admin/departments"
+                      onClick={() => setIsMenuOpen(false)}
+                      className="flex items-center gap-2 bg-blue-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      <Shield size={18} />
+                      Admin Panel
+                    </Link>
+                  )}
                   <div className="px-4 py-2 text-white/70 text-sm">{user?.email}</div>
                   <button
                     onClick={handleLogout}

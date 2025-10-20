@@ -9,6 +9,7 @@ interface AuthContextType {
   signup: (email: string, password: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
+  isAdmin: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -43,6 +44,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('user');
   };
 
+  const isAdmin = user?.role?.toLowerCase() === 'admin';
+
   return (
     <AuthContext.Provider
       value={{
@@ -52,6 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signup,
         logout,
         isAuthenticated: !!user,
+        isAdmin,
       }}
     >
       {children}
