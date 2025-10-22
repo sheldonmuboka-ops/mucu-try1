@@ -2,7 +2,7 @@ import apiClient from '../config/api';
 import { BroadcastRequest, DepartmentsDto, MediaDto, ResourcesDto, EventsDto } from '../types';
 
 const getAuthHeader = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token') || localStorage.getItem('authToken');
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 

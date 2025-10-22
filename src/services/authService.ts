@@ -9,7 +9,7 @@ export const authService = {
   async login(email: string, password: string) {
     const response = await apiClient.post('/auth/login', { email, password });
     if (response.data.token) {
-      localStorage.setItem('authToken', response.data.token);
+      localStorage.setItem('token', response.data.token);
     }
     return response.data;
   },
@@ -28,11 +28,12 @@ export const authService = {
 
   logout() {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('token');
     localStorage.removeItem('user');
   },
 
   getToken() {
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('token') || localStorage.getItem('authToken');
   },
 
   isAuthenticated() {

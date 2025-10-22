@@ -28,9 +28,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     const response = await authService.login(email, password);
-    if (response.user) {
-      setUser(response.user);
-      localStorage.setItem('user', JSON.stringify(response.user));
+    if (response.token && response.email && response.role) {
+      const user: User = {
+        id: response.email,
+        email: response.email,
+        role: response.role,
+      };
+      setUser(user);
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', response.token);
     }
   };
 
@@ -42,6 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     authService.logout();
     setUser(null);
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
   };
 
   const isAdmin = user?.role?.toLowerCase() === 'admin';
